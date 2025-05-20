@@ -4,8 +4,8 @@ namespace App\Http\Controllers\API\v1\Candidate;
 
 use App\Exceptions\AuthException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Company\LoginRequest;
-use App\Http\Requests\Company\RegisterRequest;
+use App\Http\Requests\Candidate\LoginRequest;
+use App\Http\Requests\Candidate\RegisterRequest;
 use App\Services\Candidate\AuthService;
 use Exception;
 use Illuminate\Http\JsonResponse;

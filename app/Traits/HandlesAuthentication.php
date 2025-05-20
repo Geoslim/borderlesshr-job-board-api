@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Exceptions\AuthException;
 use App\Models\Candidate;
 use App\Models\Company;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
 
 trait HandlesAuthentication
@@ -37,10 +38,10 @@ trait HandlesAuthentication
     }
 
     /**
-     * @param Candidate|Company $user
+     * @param Authenticatable $user
      * @return void
      */
-    public function revokeToken(Candidate|Company $user): void
+    public function revokeToken(Authenticatable $user): void
     {
         $user->tokens()->each(function ($token) {
             $token->revoke();

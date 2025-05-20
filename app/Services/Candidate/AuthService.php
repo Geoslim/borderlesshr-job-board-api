@@ -41,10 +41,10 @@ class AuthService
     }
 
     /**
-     * @param Company $user
+     * @param Candidate $user
      * @return void
      */
-    public function logout(Company $user): void
+    public function logout(Candidate $user): void
     {
         $this->revokeToken($user);
     }
