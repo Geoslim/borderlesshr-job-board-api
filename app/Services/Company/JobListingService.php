@@ -5,6 +5,7 @@ namespace App\Services\Company;
 use App\Models\Company;
 use App\Models\JobListing;
 use App\Traits\ServiceResponseTrait;
+use Illuminate\Support\Facades\Cache;
 
 class JobListingService
 {
@@ -121,27 +122,37 @@ class JobListingService
      */
     public function fetchPublishedJobListings(array $params): array
     {
-        $query = JobListing::with('company')
-            ->published()
-            ->latest();
+        // Generate a unique cache key based on all relevant parameters
+        // Sort params to ensure consistent key generation regardless of order
+        ksort($params);
+        $cacheKey = 'public_job_listings_' . md5(json_encode($params));
+        $cacheDuration = now()->addMinutes(5);
+
+        // Attempt to fetch from cache
+        $jobListings = Cache::remember($cacheKey, $cacheDuration, function () use ($params) {
+            $query = JobListing::with('company')
+                ->published()
+                ->latest();
 
             // Apply filters if provided
-        if (isset($params['location'])) {
-            $query->where('location', $params['location']);
-        }
+            if (isset($params['location'])) {
+                $query->where('location', $params['location']);
+            }
 
-        if (isset($params['is_remote'])) {
-            $query->where('is_remote', filter_var($params['is_remote'], FILTER_VALIDATE_BOOLEAN));
-        }
+            if (isset($params['is_remote'])) {
+                $query->where('is_remote', filter_var($params['is_remote'], FILTER_VALIDATE_BOOLEAN));
+            }
 
-        if (isset($params['search'])) {
-            $keyword = $params['search'];
-            $query->where(function ($searchQuery) use ($keyword) {
-                $searchQuery->whereFullText(['title', 'description'], $keyword);
-            });
-        }
+            if (isset($params['search'])) {
+                $keyword = $params['search'];
+                $query->where(function ($searchQuery) use ($keyword) {
+                    $searchQuery->whereFullText(['title', 'description'], $keyword);
+                });
+            }
 
-        $jobListings = $query->paginate($params['limit'] ?? 10);
+            // Paginate the results
+            return $query->paginate($params['limit'] ?? 10);
+        });
 
         return $this->serviceResponse('Job Listings Fetched Successfully', true, $jobListings);
     }
