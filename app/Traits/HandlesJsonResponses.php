@@ -2,9 +2,7 @@
 
 namespace App\Traits;
 
-use Exception;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 trait HandlesJsonResponses
