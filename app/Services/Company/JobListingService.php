@@ -150,7 +150,6 @@ class JobListingService
                 });
             }
 
-            // Paginate the results
             return $query->paginate($params['limit'] ?? 10);
         });
 
