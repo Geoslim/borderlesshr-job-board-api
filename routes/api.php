@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +18,10 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('candidate')->group(function () {
         require __DIR__ . '/v1/candidate/auth.php';
+
+        Route::middleware('auth:candidate')->group(function () {
+            require __DIR__ . '/v1/candidate/candidate.php';
+        });
     });
 
     Route::prefix('public')->group(function () {
