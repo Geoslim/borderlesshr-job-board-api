@@ -114,4 +114,35 @@ class JobListingService
 
         return $this->serviceResponse('Job Listing Deleted Successfully', true);
     }
+
+    /**
+     * @param array $params
+     * @return array
+     */
+    public function fetchPublishedJobListings(array $params): array
+    {
+        $query = JobListing::with('company')
+            ->published()
+            ->latest();
+
+            // Apply filters if provided
+        if (isset($params['location'])) {
+            $query->where('location', $params['location']);
+        }
+
+        if (isset($params['is_remote'])) {
+            $query->where('is_remote', filter_var($params['is_remote'], FILTER_VALIDATE_BOOLEAN));
+        }
+
+        if (isset($params['search'])) {
+            $keyword = $params['search'];
+            $query->where(function ($searchQuery) use ($keyword) {
+                $searchQuery->whereFullText(['title', 'description'], $keyword);
+            });
+        }
+
+        $jobListings = $query->paginate($params['limit'] ?? 10);
+
+        return $this->serviceResponse('Job Listings Fetched Successfully', true, $jobListings);
+    }
 }

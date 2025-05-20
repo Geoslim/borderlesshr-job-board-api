@@ -20,4 +20,8 @@ Route::prefix('v1')->group(function () {
     Route::prefix('candidate')->group(function () {
         require __DIR__ . '/v1/candidate/auth.php';
     });
+
+    Route::prefix('public')->group(function () {
+        require __DIR__ . '/v1/job-listing.php';
+    });
 });
