@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\JobListingController;
+use App\Http\Controllers\API\v1\JobListingController;
 use Illuminate\Support\Facades\Route;
 
 /*
