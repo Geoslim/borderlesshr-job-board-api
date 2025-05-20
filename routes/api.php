@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::prefix('company')->group(function () {
         require __DIR__ . '/v1/company/auth.php';
+
+        Route::middleware('auth:company')->group(function () {
+            require __DIR__ . '/v1/company/job-listing.php';
+        });
     });
 
     Route::prefix('candidate')->group(function () {

@@ -41,12 +41,12 @@ return [
             'provider' => 'users',
         ],
 
-        'api-candidate' => [
+        'candidate' => [
             'driver' => 'passport',
             'provider' => 'candidates',
         ],
 
-        'api-company' => [
+        'company' => [
             'driver' => 'passport',
             'provider' => 'companies',
         ],

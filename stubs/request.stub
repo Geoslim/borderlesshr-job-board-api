@@ -2,12 +2,12 @@
 
 namespace {{ namespace }};
 
-use App\Traits\ModifiesValidationErrorMessage;
+use App\Traits\HandlesJsonResponses;
 use Illuminate\Foundation\Http\FormRequest;
 
 class {{ class }} extends FormRequest
 {
-    use ModifiesValidationErrorMessage;
+    use HandlesJsonResponses;
 
     /**
      * Determine if the user is authorized to make this request.

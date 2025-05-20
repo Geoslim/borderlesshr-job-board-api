@@ -15,6 +15,6 @@ Route::prefix('auth')->group(function () {
         Route::post('register', 'register');
         Route::post('login', 'login');
 
-        Route::post('logout', 'logout')->middleware('auth:api-company');
+        Route::post('logout', 'logout')->middleware('auth:company');
     });
 });

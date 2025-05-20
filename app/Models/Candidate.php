@@ -17,15 +17,11 @@ class Candidate extends Authenticatable implements OAuthenticatable
     use SoftDeletes;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are not mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password'
-    ];
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for serialization.
