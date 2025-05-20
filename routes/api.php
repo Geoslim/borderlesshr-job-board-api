@@ -12,6 +12,7 @@ Route::prefix('v1')->group(function () {
         require __DIR__ . '/v1/company/auth.php';
 
         Route::middleware('auth:company')->group(function () {
+            require __DIR__ . '/v1/company/company.php';
             require __DIR__ . '/v1/company/job-listing.php';
         });
     });
