@@ -10,7 +10,7 @@ This is an API service for a job board platform, facilitating interactions betwe
 
 To get this project running, you'll need:
 
-* **PHP v8.4+**
+* **PHP v8.3+**
 * **Composer**
 * **Database:** MySQL
 * **Cache Store:** Redis (recommended for queues and caching)
@@ -35,23 +35,27 @@ This project supports two main ways to get started: using **Docker (recommended)
     ```bash
     cp .env.example .env
     ```
-    *The `.env.example` file contains essential credentials for file storage, including a test credential.*
+   *The `.env.example` file contains essential credentials for file storage, including a test credential.*
 
 3. **Configure `.env`:**
     * Open the `.env` file you just created.
     * Fill in your specific configuration settings (e.g., database connection details).
     * If you're **using Docker**, add these keys, adjusting ports if they conflict on your machine:
         ```dotenv
-        APP_PORT=8008
-        FORWARD_DB_PORT=3309
-        FORWARD_REDIS_PORT=6379
+        APP_PORT=8006
+        FORWARD_DB_PORT=3356
+        FORWARD_REDIS_PORT=6376
         ```
 4. **Install Composer Dependencies:**
     ```bash
     composer install
     ```
+5. **Generate Application Key:**
+    ```bash
+    php artisan key:generate
+    ```
 
-5. **Start the Application:**
+6. **Start the Application:**
     * If you're **using Docker**:
         ```bash
         ./vendor/bin/sail up -d
@@ -60,20 +64,20 @@ This project supports two main ways to get started: using **Docker (recommended)
         ```bash
         php artisan serve
         ```
-6. **Generate Application Key:**
-    ```bash
-    php artisan key:generate
-    ```
+
 7. **Run Migrations and Seed Database:**
     ```bash
     php artisan migrate --seed
     ```
-
+7. **Run Storage Link - Required to enable access to uploaded/public files:**
+   ```bash
+   php artisan storage:link
+   ```
 ---
 
 ### Accessing the API & Running Queue Worker
 
-Your API should be accessible at `http://localhost:8008` (if using Docker with the specified `APP_PORT`) or `http://localhost:8000` (if running locally without Docker).
+Your API should be accessible at `http://localhost:8006` (if using Docker with the specified `APP_PORT`) or `http://localhost:8000` (if running locally without Docker).
 
 #### To process candidate job applications, you must start the Queue Worker:
 
@@ -85,4 +89,8 @@ Your API should be accessible at `http://localhost:8008` (if using Docker with t
     ```bash
     php artisan queue:work
     ```
-*Keep this terminal window open while testing job applications, as this process handles background tasks like file uploads.*
+*Keep the queue terminal window open while testing job applications*
+
+Import the Postman Collection
+
+Click on Import, then select the .json file .

@@ -39,26 +39,23 @@ class ProcessJobApplication implements ShouldQueue
         $coverLetterUrl = null;
 
         try {
-            // Upload resume
-            $resumeUploadResponse = $cloudinaryService->upload($this->resumeFile);
-
-            if ($resumeUploadResponse) {
-                $resumeUrl = $resumeUploadResponse;
-            } else {
-                throw new \Exception('Failed to upload resume to Cloudinary.');
+            if (!file_exists($this->resumeFile)) {
+                Log::debug('fsfere', [$this->resumeFile]);
                 // Notify user of failed application
+                throw new \Exception("Resume file not found at $this->resumeFile");
             }
 
-            // Upload cover letter if provided
-            if (!is_null($this->coverLetterFile)) {
-                $coverLetterUploadResponse = $cloudinaryService->upload($this->coverLetterFile);
+            $resumeUploadResponse = $cloudinaryService->upload($this->resumeFile);
+            $resumeUrl = $resumeUploadResponse;
 
-                if ($coverLetterUploadResponse) {
-                    $coverLetterUrl = $coverLetterUploadResponse;
-                } else {
-                    throw new \Exception('Failed to upload cover letter to Cloudinary.');
+            if ($this->coverLetterFile !== null) {
+                if (!file_exists($this->coverLetterFile)) {
                     // Notify user of failed application
+                    throw new \Exception("Cover letter file not found at $this->coverLetterFile");
                 }
+
+                $coverLetterUploadResponse = $cloudinaryService->upload($this->coverLetterFile);
+                $coverLetterUrl = $coverLetterUploadResponse;
             }
 
             JobApplication::create([

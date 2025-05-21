@@ -31,11 +31,15 @@ class JobApplicationService
         $resumeFile = $data['resume'];
         $coverLetterFile = $data['cover_letter'] ?? null;
 
+        // Store files in temp directory and pass the stored paths
+        $resumePath = $resumeFile->store('temp', 'public');
+        $coverLetterPath = $coverLetterFile?->store('temp', 'public');
+
         ProcessJobApplication::dispatch(
             $candidate->id,
             $jobListingId,
-            $resumeFile->getRealPath(),
-            $coverLetterFile?->getRealPath() ?? null
+            storage_path("app/public/$resumePath"),
+            $coverLetterPath ? storage_path("app/public/$coverLetterPath") : null
         );
 
         return $this->serviceResponse('Your application has been submitted and will be processed.', true);
