@@ -94,3 +94,50 @@ Your API should be accessible at `http://localhost:8006` (if using Docker with t
 Import the Postman Collection
 
 Click on Import, then select the .json file .
+
+
+### 🧠 Assumptions & Improvements
+
+#### ✅ Assumptions
+
+- **Separate Authentication Guards:**  
+  Companies and Candidates have distinct auth guards, user providers, and middleware to isolate their access logic.
+
+- **File Storage:**  
+  Resume files are stored using a cloud service (e.g., Cloudinary, AWS S3, etc.) based on project needs, with queue jobs handling file processing.
+
+- **Single Job Application Enforcement:**  
+  A candidate can apply to a job only once, enforced via a unique composite constraint (`job_listing_id` + `candidate_id`) in the applications table and logic in the controller.
+
+- **Soft Deletes:**  
+  All records are soft-deleted using Laravel’s `SoftDeletes` trait;
+
+- **Job Publishing:**  
+  Only jobs with and `is_published` set to `true` date are shown in public listings, acting as a publish flag.
+
+- **Authenticated Context:**  
+  All actions (e.g., posting a job, applying for a job) require authenticated users via Laravel Passport tokens. (Except when viewing public hob listings)
+
+- **Enhanced Validation with Form Requests:**  
+  Validated all incoming data using Laravel’s `FormRequest` classes to keep controllers clean and centralize validation rules.
+
+
+## 🚀 Some Improvements
+
+- **Enhanced Validation with Custom Form Requests:**  
+  Validate all incoming data using Laravel’s `FormRequest` classes to keep controllers clean and centralize validation rules.
+
+- **Email Notifications:**  
+  Send notifications (via queue) when a candidate applies for a job or when the application fails with the reason if possible, notifying the company.
+
+- **Admin Dashboard :**  
+  Introduce a third guard for administrators to manage jobs, users, and monitor platform activity.
+
+- **Job Expiry:**  
+  Allow setting expiry dates for job posts and auto-hide expired jobs from public listings.
+
+- **Application Status Tracking:**  
+  Track the status of each application (e.g., pending, reviewed, accepted, rejected)
+
+**Application Withdrawal:**  
+ - Allow candidates to withdraw applications.

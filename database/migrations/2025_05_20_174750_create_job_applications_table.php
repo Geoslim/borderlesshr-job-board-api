@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('resume');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->unique(['job_listing_id', 'candidate_id'], 'unique_job_listing_candidate');
         });
     }
 
